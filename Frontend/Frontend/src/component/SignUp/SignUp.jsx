@@ -2,9 +2,11 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
- const [email,setEmail] = useState("");
- const [password,setPassword] = useState("");
- const [confirmPassword,setConfirmPassword] = useState("")
+  const [username, setUsername] = useState(""); // new state for username
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
   const navigate = useNavigate();
 
   const navigateLogin = () => {
@@ -19,35 +21,55 @@ const Signup = () => {
         </h1>
 
         <form className="space-y-4">
+          {/* Username field */}
+          <div>
+            <input
+              type="text"
+              placeholder="Enter your username"
+              required
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
+            />
+          </div>
+
+          {/* Email field */}
           <div>
             <input
               type="email"
               placeholder="Enter your email"
               required
-              value = {email}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
-              onChange={(event)=>setEmail(event.target.value)}
-           />
+            />
           </div>
 
+          {/* Password field */}
           <div>
             <input
               type="password"
               placeholder="Enter password"
               required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
             />
           </div>
 
+          {/* Confirm Password field */}
           <div>
             <input
               type="password"
               placeholder="Confirm password"
               required
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
             />
           </div>
 
+          {/* Submit button */}
           <button
             type="submit"
             className="w-full bg-blue-600 text-white font-medium py-2 rounded-lg hover:bg-blue-700 transition duration-200"
@@ -55,6 +77,7 @@ const Signup = () => {
             Sign Up
           </button>
 
+          {/* Navigation to Login */}
           <p className="text-sm text-center text-gray-600">
             Already have an account?{" "}
             <span
