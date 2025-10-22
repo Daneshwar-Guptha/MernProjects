@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from 'axios'
 
 const Signup = () => {
-  const [username, setUsername] = useState(""); // new state for username
+  const [username, setUsername] = useState("");
+  const [userNameStatus, setUserNameStatus] = useState(true);
+  const [passwordStatus,setPasswordStatus] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -10,7 +13,38 @@ const Signup = () => {
   const navigate = useNavigate();
 
   const navigateLogin = () => {
-    navigate("/"); 
+    navigate("/");
+  };
+  const PostData = {
+    username: username,
+    email: email,
+    password: password
+  }
+  const callApi = async (e) => {
+    e.preventDefault();
+    if (username.length < 4) {
+      setUserNameStatus(false)
+      if (password !== confirmPassword) {
+        const postData = { username, email, password };
+        setConfirmPassword(false);
+
+        try {
+          const response = await axios.post("http://localhost:2000/signup", postData);
+          console.log("Signup success:", response.data);
+          alert("Signup successful!");
+          navigate("/");
+        } catch (error) {
+          console.error("Signup error:", error);
+          alert("Error during signup. Check console.");
+        }
+
+        
+      }
+    }
+
+
+
+
   };
 
   return (
@@ -20,8 +54,8 @@ const Signup = () => {
           Sign Up
         </h1>
 
-        <form className="space-y-4">
-          {/* Username field */}
+        <form className="space-y-4" onSubmit={callApi}>
+
           <div>
             <input
               type="text"
@@ -32,8 +66,15 @@ const Signup = () => {
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
             />
           </div>
+          <div>
+            {!userNameStatus && (
+              <p className="text-red-500 text-sm mt-1">
+                Username must be at least 4 characters
+              </p>
+            )}
+          </div>
 
-          {/* Email field */}
+
           <div>
             <input
               type="email"
@@ -45,7 +86,7 @@ const Signup = () => {
             />
           </div>
 
-          {/* Password field */}
+
           <div>
             <input
               type="password"
@@ -57,7 +98,7 @@ const Signup = () => {
             />
           </div>
 
-          {/* Confirm Password field */}
+
           <div>
             <input
               type="password"
@@ -68,8 +109,14 @@ const Signup = () => {
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
             />
           </div>
+           <div>
+            {!passwordStatus && (
+              <p className="text-red-500 text-sm mt-1">
+               Passwords do not match
+              </p>
+            )}
+          </div>
 
-          {/* Submit button */}
           <button
             type="submit"
             className="w-full bg-blue-600 text-white font-medium py-2 rounded-lg hover:bg-blue-700 transition duration-200"
@@ -77,7 +124,7 @@ const Signup = () => {
             Sign Up
           </button>
 
-          {/* Navigation to Login */}
+
           <p className="text-sm text-center text-gray-600">
             Already have an account?{" "}
             <span

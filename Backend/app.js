@@ -5,9 +5,10 @@ const User = require('./model/UserSchema')
 const cors = require('cors');
 
 app.use(cors());
+app.use(express.json())
 
 app.post('/signup',(req,res)=>{
-    console.log(res.body);
+    console.log(req.body);
     res.send(req.body);
 })
 
