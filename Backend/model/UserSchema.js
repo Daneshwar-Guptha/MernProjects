@@ -1,19 +1,29 @@
 const express = require('express');
 const { Schema, model } = require('mongoose');
+const validator = require('validator');
 const UserSchema = new Schema({
-    userName:{
+    username:{
         type:String,
-        required:true
+        required:true,
+        minLength:[4,"minimum length is 4"]
     },
     email:{
         type:String,
         required:true,
         unique:true,
-        match: [/^\S+@\S+\.\S+$/, 'Please use a valid email']
+        validate:{
+        validator:validator.isEmail,
+        message: "Please enter a valid email address"
+        }
+        
     },
     password:{
         type:String,
-        required:true
+        required:true,
+        validate:{
+            validator:validator.isStrongPassword,
+            message:"please Enter Strong password"
+        }
     }
 })
 const User = new model("User",UserSchema);
