@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from 'axios';
 
 const Login = () => {
-  const [username, setUsername] = useState(""); // new username state
+  const [username, setUsername] = useState(""); 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -12,10 +13,18 @@ const Login = () => {
     navigate("/signup");
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
+    const loginData = {
+      username,
+      email,
+      password
+    }
+    const response = await axios.post("http://localhost:2000/login",loginData);
+    console.log(response);
+
     alert(`Logged in as: ${username || email}`);
-    // Add backend login logic here
+   
   };
 
   return (
