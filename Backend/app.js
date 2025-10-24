@@ -8,25 +8,30 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const validator = require('validator');
 
-app.use(cors());
+app.use(cors({
+  origin: "http://localhost:5173", // replace with your React app URL
+  credentials: true,               // allow cookies to be sent and received
+}));
+
 app.use(express.json());
+
 
 app.post('/signup', async (req, res) => {
     try {
         const { username, email, password } = req.body;
-        const userData = await User.findOne({email});
+        const userData = await User.findOne({ email });
 
-        if( !username || username.length<4){
-            res.status(400).send({message:"plase Enter UserName minium 5 characters"});
+        if (!username || username.length < 4) {
+            res.status(400).send({ message: "plase Enter UserName minium 5 characters" });
         }
 
-       else if (userData) {
+        else if (userData) {
             res.status(400).json({ message: "User already exists with this email" });
         }
-        else if(!(validator.isStrongPassword(password))){
-            res.status(400).json({message:"please Enter Strong password"})
+        else if (!(validator.isStrongPassword(password))) {
+            res.status(400).json({ message: "please Enter Strong password" })
         }
-        
+
 
         else {
             const bcryptPassword = await bcrypt.hash(password, 10)
@@ -45,7 +50,7 @@ app.post('/signup', async (req, res) => {
 
 app.post('/login', async (req, res) => {
     try {
-        const { password,username,email} = req.body;
+        const { password, username, email } = req.body;
         const Data = await User.findOne({ email });
         if (!Data) {
             res.send("please first register");
@@ -56,10 +61,15 @@ app.post('/login', async (req, res) => {
                 res.status(401).send("Invalid password");
             }
             else {
-                
+
                 const token = jwt.sign({ Data }, 'UserSchema');
-                res.cookie("token", token)
-                res.send(Data,token);
+                res.cookie("token", token,{
+                    httpOnly:true
+                })
+                res.send({
+                    Data,
+                    token
+                })
             }
 
         }
@@ -71,6 +81,7 @@ app.post('/login', async (req, res) => {
     }
 })
 
+app.post
 
 
 

@@ -20,7 +20,8 @@ const Login = () => {
       email,
       password
     }
-    const response = await axios.post("http://localhost:2000/login",loginData);
+    const response = await axios.post("http://localhost:2000/login",loginData, { withCredentials: true });
+    
     console.log(response);
 
     alert(`Logged in as: ${username || email}`);
