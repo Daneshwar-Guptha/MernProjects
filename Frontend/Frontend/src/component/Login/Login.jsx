@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
 const Login = () => {
-  const [username, setUsername] = useState(""); 
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -13,19 +13,19 @@ const Login = () => {
     navigate("/signup");
   };
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const loginData = {
       username,
       email,
       password
     }
-    const response = await axios.post("http://localhost:2000/login",loginData, { withCredentials: true });
-    
+    const response = await axios.post("http://localhost:2000/login", loginData, { withCredentials: true });
+
     console.log(response);
 
     alert(`Logged in as: ${username || email}`);
-   
+
   };
 
   return (
@@ -86,6 +86,13 @@ const Login = () => {
             >
               Sign Up
             </span>
+          </p>
+
+          <p
+            className="text-sm text-blue-600 hover:underline text-center cursor-pointer mt-2"
+            onClick={() => navigate("/forgot-password")}
+          >
+            Forgot password?
           </p>
         </form>
       </div>

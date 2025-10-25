@@ -9,6 +9,7 @@ const jwt = require('jsonwebtoken');
 const validator = require('validator');
 const LoginRoutes = require('../Backend/routes/LoginRoutes');
 const Signuproutes = require('../Backend/routes/SignupRoutes');
+const LogoutRoutes = require('../Backend/routes/LogoutRoutes')
 
 app.use(cors({
   origin: "http://localhost:5173", 
@@ -21,6 +22,7 @@ app.use(express.json());
 
 app.use('/',Signuproutes)
 app.use('/',LoginRoutes);
+app.use('/',LogoutRoutes);
 
 
 DBConnection()

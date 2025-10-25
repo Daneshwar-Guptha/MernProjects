@@ -5,12 +5,12 @@ const User = require('../model/UserSchema')
 const cookie = require("cookie");
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-// const validator = require('validator');
+const validator = require('validator');
 
 LoginRoutes.use(express.json());
 
 LoginRoutes.post('/login', async (req, res) => {
-    console.log("Login");
+
     try {
         const { password, username, email } = req.body;
         const Data = await User.findOne({ email });
@@ -31,9 +31,7 @@ LoginRoutes.post('/login', async (req, res) => {
                 res.cookie("token", token, {
                     httpOnly: true
                 })
-                res.send({
-                    Data
-                })
+                res.send(token)
             }
 
         }
@@ -44,5 +42,30 @@ LoginRoutes.post('/login', async (req, res) => {
 
 
     }
+})
+
+LoginRoutes.patch('/login/forgotPassword', async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const chechEmail = await User.findOne({ email });
+        const bycrptPassword = await bcrypt.hash(password, 10);
+        if (!chechEmail) {
+            throw new Error("Invalid Email");
+        }
+        else {
+            const replaceData = await User.findOneAndUpdate({ email }, { $set: { password: bycrptPassword } }, { new: true, validator: true });
+            if (!(validator.isStrongPassword(password))) {
+                throw new Error("please Enter Strong Password");
+
+            }
+            res.status(201).send("sucess");
+
+        }
+
+    }
+    catch (error) {
+        res.status(400).send(error.message);
+    }
+
 })
 module.exports = LoginRoutes;
