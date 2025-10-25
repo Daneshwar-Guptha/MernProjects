@@ -44,8 +44,10 @@ const Signup = () => {
       alert("Signup successful!");
       navigate("/");
     } catch (error) {
-      console.error("Signup error:", error);
-      alert("Error during signup. Check console.");
+      const errmessage = error.response.data.message;
+      console.error("Signup error:",errmessage);
+      alert(errmessage);
+      
     }
   };
 

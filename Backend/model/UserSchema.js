@@ -25,6 +25,6 @@ const UserSchema = new Schema({
             message:"please Enter Strong password"
         }
     }
-})
+},{timestamps:true})
 const User = new model("User",UserSchema);
 module.exports = User
