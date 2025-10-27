@@ -2,7 +2,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
+
 const Login = () => {
+  
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -22,9 +24,13 @@ const Login = () => {
     }
     const response = await axios.post("http://localhost:2000/login", loginData, { withCredentials: true });
 
-    console.log(response);
+    if(response.status==400){
+      const message = response.response.Data;
+      alert(message)
+    }
 
     alert(`Logged in as: ${username || email}`);
+    
 
   };
 

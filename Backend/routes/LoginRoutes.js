@@ -29,7 +29,7 @@ LoginRoutes.post('/login', async (req, res) => {
 
                 const token = jwt.sign({ Data }, 'UserSchema');
                 res.cookie("token", token, {
-                    httpOnly: true
+                    httpOnly: false,
                 })
                 res.send(token)
             }
