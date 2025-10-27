@@ -7,9 +7,15 @@ const jwt = require('jsonwebtoken')
 const validator = require('validator');
 LogoutRoutes.use(express.json());
 
-LogoutRoutes.get('/logout',async(req,res)=>{
-    const token= null;
-    res.clearCookie("token",token);
-    res.status(200).send("sucess");
-})
+
+
+LogoutRoutes.get('/logout', (req, res) => {
+  res.clearCookie('token', {
+    httpOnly: true,    
+    secure: false,      
+    sameSite: 'lax',
+  });
+
+  res.status(200).json({ message: 'Logged out successfully' });
+});
 module.exports = LogoutRoutes;

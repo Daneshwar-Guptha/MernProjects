@@ -3,13 +3,14 @@ const app = express();
 const DBConnection = require('./config/DBConnection');
 const User = require('./model/UserSchema')
 const cors = require('cors');
-const cookie = require("cookie");
+const cookieParser = require("cookie-parser");
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const validator = require('validator');
 const LoginRoutes = require('../Backend/routes/LoginRoutes');
 const Signuproutes = require('../Backend/routes/SignupRoutes');
-const LogoutRoutes = require('../Backend/routes/LogoutRoutes')
+const LogoutRoutes = require('../Backend/routes/LogoutRoutes');
+const ProfileRoutes = require('../Backend/routes/ProfileRoutes');
 
 app.use(cors({
   origin: "http://localhost:5173", 
@@ -17,12 +18,14 @@ app.use(cors({
 }));
 
 app.use(express.json());
+app.use(cookieParser())
 
 
 
 app.use('/',Signuproutes)
 app.use('/',LoginRoutes);
 app.use('/',LogoutRoutes);
+app.use('/profile',ProfileRoutes);
 
 
 DBConnection()

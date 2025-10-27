@@ -30,8 +30,7 @@ LoginRoutes.post('/login', async (req, res) => {
                 const token = jwt.sign(
                     {
                         id: Data._id,
-                        username: Data.username,
-                        email: Data.email,
+                       
                     },
                     'UserSchema',  
                  
