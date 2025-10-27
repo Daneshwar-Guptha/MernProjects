@@ -9,7 +9,7 @@ const Profile = () => {
   const [fieldToEdit, setFieldToEdit] = useState("");
   const [newValue, setNewValue] = useState("");
 
-  // ✅ Decode token and get user info
+  
   useEffect(() => {
   const token = Cookies.get("token");
   if (token) {

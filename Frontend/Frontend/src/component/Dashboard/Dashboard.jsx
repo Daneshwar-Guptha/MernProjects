@@ -26,7 +26,7 @@ const Dashboard = () => {
 
   const handleLogout = () => {
     Cookies.remove("token");
-    navigate("/login");
+    navigate("/");
   };
 
   return (
