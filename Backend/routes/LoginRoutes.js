@@ -27,11 +27,22 @@ LoginRoutes.post('/login', async (req, res) => {
             }
             else {
 
-                const token = jwt.sign({ Data }, 'UserSchema');
+                const token = jwt.sign(
+                    {
+                        id: Data._id,
+                        username: Data.username,
+                        email: Data.email,
+                    },
+                    'UserSchema',  
+                 
+                );
+
                 res.cookie("token", token, {
-                    httpOnly: false,
-                })
-                res.send(token)
+                    httpOnly: false,  
+                    sameSite: "Lax",
+                });
+
+                res.send(token);
             }
 
         }

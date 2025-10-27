@@ -2,9 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
-
 const Login = () => {
-  
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -17,21 +15,23 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const loginData = {
-      username,
-      email,
-      password
+
+    const loginData = { username, email, password };
+
+    try {
+      const response = await axios.post(
+        "http://localhost:2000/login",
+        loginData,
+        { withCredentials: true }
+      );
+
+      if (response.status === 200) {
+        alert(`Logged in as: ${username || email}`);
+        navigate("/home"); // ✅ navigate only after successful login
+      }
+    } catch (err) {
+      alert(err.response?.data?.message || "Login failed. Please try again.");
     }
-    const response = await axios.post("http://localhost:2000/login", loginData, { withCredentials: true });
-
-    if(response.status==400){
-      const message = response.response.Data;
-      alert(message)
-    }
-
-    alert(`Logged in as: ${username || email}`);
-    
-
   };
 
   return (
