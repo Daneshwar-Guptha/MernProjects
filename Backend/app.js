@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const DBConnection = require('./config/DBConnection');
 const User = require('./model/UserSchema')
+const Connection = require('./model/ConnectionSchema')
 const cors = require('cors');
 const cookieParser = require("cookie-parser");
 const bcrypt = require('bcrypt');
@@ -11,6 +12,7 @@ const LoginRoutes = require('../Backend/routes/LoginRoutes');
 const Signuproutes = require('../Backend/routes/SignupRoutes');
 const LogoutRoutes = require('../Backend/routes/LogoutRoutes');
 const ProfileRoutes = require('../Backend/routes/ProfileRoutes');
+const ConnectionRoutes = require('./routes/ConnectionRoutes');
 
 app.use(cors({
   origin: "http://localhost:5173", 
@@ -26,6 +28,7 @@ app.use('/',Signuproutes)
 app.use('/',LoginRoutes);
 app.use('/',LogoutRoutes);
 app.use('/profile',ProfileRoutes);
+app.use('/request',ConnectionRoutes);
 
 
 DBConnection()

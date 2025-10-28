@@ -41,7 +41,7 @@ LoginRoutes.post('/login', async (req, res) => {
                     sameSite: "Lax",
                 });
 
-                res.send(token);
+                res.send("successfully token generated");
             }
 
         }
