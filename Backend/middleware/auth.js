@@ -7,7 +7,7 @@ const auth = async (req, res, next) => {
         const { token } = req.cookies;
         const decodedObj = await jwt.verify(token, "UserSchema");
         const { id } = decodedObj;
-        const userFound = await User.findById(id);
+        const userFound = await User.findById(id).select("-password");
         if (!userFound) {
             throw new Error('Invalid User')
         }

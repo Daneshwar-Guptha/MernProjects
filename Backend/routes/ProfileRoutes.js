@@ -2,31 +2,34 @@ const express = require('express');
 const ProfileRoutes = express.Router();
 const auth = require('../middleware/auth');
 const User = require('../model/UserSchema');
-const jwt = require('jsonwebtoken');
 const validator = require('validator');
 
-ProfileRoutes.get('/view/:id', auth, async (req, res) => {
-    const { id } = req.params;
-    const data = await User.findOne({ _id: id });
-    res.status(200).send(data);
+ProfileRoutes.get('/view', auth, async (req, res) => {
+    try {
+        const userFound = req.user;
+        res.status(200).send(userFound);
+
+    } catch (error) {
+        res.status(400).send(error.message);
+    }
 });
 
 ProfileRoutes.patch('/edit/username', auth, async (req, res) => {
     try {
-        const { token } = req.cookies;
-        const decodedObj = await jwt.verify(token, "UserSchema");
-        const { id } = decodedObj;
-        const userFound = await User.findById(id);
-        if (!userFound) {
+
+
+        const userFound = req.user;
+        const userFound1 = await User.findById(userFound._id);
+        if (!userFound1) {
             throw new Error({ message: "Invalid User" });
         }
         const { username } = req.body;
         if (username.trim().length > 4) {
             const response = await User.findByIdAndUpdate(
-                { _id: id },
+                {_id:userFound._id}, 
                 { $set: req.body },
                 { new: true }
-            );
+            ).select("-password");
             res.status(200).json(response);
         }
         else {
@@ -40,11 +43,9 @@ ProfileRoutes.patch('/edit/username', auth, async (req, res) => {
 
 ProfileRoutes.patch('/edit/password', auth, async (req, res) => {
     try {
-        const { token } = req.cookies;
-        const decodedObj = await jwt.verify(token, "UserSchema");
-        const { id } = decodedObj;
-        const userFound = await User.findById(id);
-        if (!userFound) {
+       const userFound = req.user;
+        const userFound1 = await User.findById(userFound._id);
+        if (!userFound1) {
             throw new Error({ message: "Invalid User" });
         }
         const { password } = req.body;
@@ -53,10 +54,10 @@ ProfileRoutes.patch('/edit/password', auth, async (req, res) => {
         }
         else {
             const response = await User.findByIdAndUpdate(
-                { _id: id },
+                { _id:userFound._id },
                 { $set: req.body },
                 { new: true }
-            );
+            ).select("-password");
             res.status(200).json("modified");
         }
     }

@@ -1,33 +1,43 @@
 import { Outlet, NavLink, useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
-import { jwtDecode } from "jwt-decode";
 import { LogOut, Home, User, Settings } from "lucide-react";
 import { useState, useEffect } from "react";
+import axios from 'axios';
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const [userData, setUserData] = useState(null);
 
-  useEffect(() => {
-    const token = Cookies.get("token");
-    if (token) {
-      try {
-        const decoded = jwtDecode(token);
-        const data = decoded.Data || decoded;
-        setUserData({
-          username: data.username,
-          email: data.email,
-        });
-      } catch (err) {
-        console.error("Invalid token:", err);
-      }
-    }
-  }, []);
 
-  const handleLogout = () => {
-    Cookies.remove("token");
-    navigate("/");
-  };
+
+  useEffect(() => {
+
+    const fetchDetails = async () => {
+      try {
+        const decode = await axios.get("http://localhost:2000/profile/view",{
+          withCredentials:true
+        });
+        setUserData({
+          username: decode.data.username,
+          email: decode.data.email,
+        });
+      } catch (error) { 
+        console.log(error.message);
+      }
+
+    }
+    fetchDetails();
+}, []);
+
+  const handleLogout = async() => {
+    try{
+      const response = await axios.get("http://localhost:2000/logout",{
+        withCredentials:true
+      });
+      navigate("/");
+    }catch(error){
+      console.log(error.message)
+    }
+};
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-50 to-gray-100">
@@ -54,10 +64,9 @@ const Dashboard = () => {
             <NavLink
               to="/home"
               className={({ isActive }) =>
-                `flex items-center gap-2 transition ${
-                  isActive
-                    ? "text-blue-600 border-b-2 border-blue-600 pb-1"
-                    : "hover:text-blue-500"
+                `flex items-center gap-2 transition ${isActive
+                  ? "text-blue-600 border-b-2 border-blue-600 pb-1"
+                  : "hover:text-blue-500"
                 }`
               }
             >
@@ -68,10 +77,9 @@ const Dashboard = () => {
             <NavLink
               to="/profile"
               className={({ isActive }) =>
-                `flex items-center gap-2 transition ${
-                  isActive
-                    ? "text-blue-600 border-b-2 border-blue-600 pb-1"
-                    : "hover:text-blue-500"
+                `flex items-center gap-2 transition ${isActive
+                  ? "text-blue-600 border-b-2 border-blue-600 pb-1"
+                  : "hover:text-blue-500"
                 }`
               }
             >
@@ -82,10 +90,9 @@ const Dashboard = () => {
             <NavLink
               to="/settings"
               className={({ isActive }) =>
-                `flex items-center gap-2 transition ${
-                  isActive
-                    ? "text-blue-600 border-b-2 border-blue-600 pb-1"
-                    : "hover:text-blue-500"
+                `flex items-center gap-2 transition ${isActive
+                  ? "text-blue-600 border-b-2 border-blue-600 pb-1"
+                  : "hover:text-blue-500"
                 }`
               }
             >

@@ -13,7 +13,7 @@ const ConnectionRoutes = new Schema({
     },
     status:{
         type:String,
-        enum:["accept","rejected","intersted","success"]
+        enum:["accept","rejected","interested","ignore"]
     }
 },{timestamps:true})
 const Connection = new model("Connection", ConnectionRoutes);

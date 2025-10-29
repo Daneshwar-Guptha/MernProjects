@@ -13,6 +13,7 @@ const Signuproutes = require('../Backend/routes/SignupRoutes');
 const LogoutRoutes = require('../Backend/routes/LogoutRoutes');
 const ProfileRoutes = require('../Backend/routes/ProfileRoutes');
 const ConnectionRoutes = require('./routes/ConnectionRoutes');
+const UserRoutes = require('./routes/UserRoutes');
 
 app.use(cors({
   origin: "http://localhost:5173", 
@@ -27,6 +28,7 @@ app.use('/',LoginRoutes);
 app.use('/',LogoutRoutes);
 app.use('/profile',ProfileRoutes);
 app.use('/request',ConnectionRoutes);
+app.use('/user',UserRoutes)
 
 DBConnection()
     .then(() => {

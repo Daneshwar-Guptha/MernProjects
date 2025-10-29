@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { User, Mail, Lock, Edit3, X } from "lucide-react";
-import Cookies from "js-cookie";
-import {jwtDecode} from "jwt-decode";
+import axios from 'axios';
 
 const Profile = () => {
   const [user, setUser] = useState(null);
@@ -9,22 +8,26 @@ const Profile = () => {
   const [fieldToEdit, setFieldToEdit] = useState("");
   const [newValue, setNewValue] = useState("");
 
-  
+
   useEffect(() => {
-  const token = Cookies.get("token");
-  if (token) {
-    try {
-      const decoded = jwtDecode(token);
-      console.log("Decoded token payload:", decoded); 
-      setUser({
-        username: decoded.username,
-        email: decoded.email,
-      });
-    } catch (err) {
-      console.error("Invalid token:", err);
-    }
-  }
-}, []);
+    const fetchProfile = async () => {
+      try {
+        const res = await axios.get("http://localhost:2000/profile/view", {
+          withCredentials: true, 
+        });
+
+      
+        setUser({
+          username: res.data.username,
+          email: res.data.email,
+        });
+      } catch (err) {
+        console.error("Invalid User:", err);
+      }
+    };
+
+    fetchProfile();
+  }, []);
   const handleEditClick = (field) => {
     setFieldToEdit(field);
     setNewValue(user[field]);

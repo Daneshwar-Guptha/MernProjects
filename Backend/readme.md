@@ -18,8 +18,8 @@ POST /request/review/accepted/:requestId
 
 POST /request/review/rejected/:requestId
 
-GET /user/connections
+GET /user/connections // accepted
 
-GET /user/received
+GET /user/received // friend request
 
-GET /user/feed
+GET /user/feed // reamining users 
