@@ -5,11 +5,15 @@ const User = require('./UserSchema');
 const ConnectionRoutes = new Schema({
     toUserId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: User
+        ref: "User"
     },
     fromUserId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: User
+        ref: "User"
+    },
+    status:{
+        type:String,
+        enum:["accept","rejected","intersted","success"]
     }
 },{timestamps:true})
 const Connection = new model("Connection", ConnectionRoutes);

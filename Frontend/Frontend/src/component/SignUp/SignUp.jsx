@@ -45,9 +45,9 @@ const Signup = () => {
       navigate("/");
     } catch (error) {
       const errmessage = error.response.data.message;
-      console.error("Signup error:",errmessage);
+      console.error("Signup error:", errmessage);
       alert(errmessage);
-      
+
     }
   };
 

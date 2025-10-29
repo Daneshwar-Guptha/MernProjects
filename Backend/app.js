@@ -22,14 +22,11 @@ app.use(cors({
 app.use(express.json());
 app.use(cookieParser())
 
-
-
 app.use('/',Signuproutes)
 app.use('/',LoginRoutes);
 app.use('/',LogoutRoutes);
 app.use('/profile',ProfileRoutes);
 app.use('/request',ConnectionRoutes);
-
 
 DBConnection()
     .then(() => {
