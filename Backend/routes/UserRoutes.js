@@ -5,6 +5,8 @@ const Connection = require('../model/ConnectionSchema');
 const auth = require('../middleware/auth');
 
 UserRoutes.get('/connections', auth, async (req, res) => {
+
+
     try {
         const userFound = req.user;
         const connections = await Connection.find(
@@ -15,12 +17,12 @@ UserRoutes.get('/connections', auth, async (req, res) => {
                 ]
             }
         ).populate("toUserId", "username").populate("fromUserId", "username");
-      
+
         let connectionNames = [];
         connections.forEach(element => {
             if (element.toUserId._id.equals(userFound._id)) {
                 connectionNames.push(element.fromUserId)
-               
+
             }
             else {
                 connectionNames.push(element.toUserId);
